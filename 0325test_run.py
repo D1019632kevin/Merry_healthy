@@ -10,7 +10,7 @@ from threading import Timer
 from pythonosc import udp_client
 import time
 import matplotlib.pyplot as plt
-
+#hiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiii
 IP = "192.168.0.90" 
 PORT = 7676
 CLIENT = udp_client.SimpleUDPClient(IP, PORT)
