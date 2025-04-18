@@ -21,14 +21,10 @@ class Interface:
         self.root = root
         self.label = label
         self.sound_dict = {}
-        self.a_1= False
-        self.a_2= False
-        self.b_1 = False
-        self.b_2 = False
+        self.a_1, self.a_2, self.b_1, self.b_2= False, False, False, False
         self.root.geometry("1920x1080")
         self.root.title("人體姿態偵測")
-        self.temp2 = 0
-        self.temp3 = 0
+        self.temp2,self.temp3,self.temp4,self.temp5 = 0, 0, 0, 0
         self.fpstemp = []
         
         self.title_frame = tk.Frame(root)
@@ -73,7 +69,20 @@ class Interface:
         pygame.mixer.Sound(sound_dict[choose_sound]).play()
         self.temp2 = choose_sound
 
-    def play_sound_1(self, choose_sound):  
+    def play_sound_p2(self, choose_sound):  
+        temp1 = choose_sound
+        if temp1 == self.temp5:
+            return
+        sound_dict = {'a': r'C:\Users\user\Desktop\Merry\音樂健康\Voice\continue.mp3', 'b': r'C:\Users\user\Desktop\Merry\音樂健康\Voice\A2.mp3', 
+                      'c': r'C:\Users\user\Desktop\Merry\音樂健康\Voice\A3.mp3', 'd': r'C:\Users\user\Desktop\Merry\音樂健康\Voice\A4.mp3',  
+                      'e': r'C:\Users\user\Desktop\Merry\音樂健康\Voice\A5.mp3',
+                      'f': r'C:\Users\user\Desktop\Merry\音樂健康\Voice\蟋蟀V3_降噪正規化_左.wav', 'g': r'C:\Users\user\Desktop\Merry\音樂健康\Voice\蟋蟀V3_降噪正規化_右.wav' }
+
+        # pygame.mixer.Sound.load(sound_dict[choose_sound])
+        pygame.mixer.Sound(sound_dict[choose_sound]).play()
+        self.temp5 = choose_sound
+
+    def play_sound_1_1(self, choose_sound):  
         temp1 = choose_sound
         if temp1 == self.temp3:
             return
@@ -85,6 +94,18 @@ class Interface:
         pygame.mixer.music.load(sound_dict[choose_sound])
         pygame.mixer.music.play()
         self.temp3 = choose_sound
+    def play_sound_1_2(self, choose_sound):  
+        temp1 = choose_sound
+        if temp1 == self.temp4:
+            return
+        sound_dict = {'1': r'C:\Users\user\Desktop\Merry\音樂健康\Voice\continue.mp3', '2': r'C:\Users\user\Desktop\Merry\音樂健康\Voice\A2.mp3', 
+                        '3': r'C:\Users\user\Desktop\Merry\音樂健康\Voice\A3.mp3', '4': r'C:\Users\user\Desktop\Merry\音樂健康\Voice\A4.mp3',  
+                        '5': r'C:\Users\user\Desktop\Merry\音樂健康\Voice\A5.mp3',
+                        '6': r'C:\Users\user\Desktop\Merry\音樂健康\Voice\蟋蟀V3_降噪正規化_左.wav', '7': r'C:\Users\user\Desktop\Merry\音樂健康\Voice\蟋蟀V3_降噪正規化_右.wav' }
+
+        pygame.mixer.music.load(sound_dict[choose_sound])
+        pygame.mixer.music.play()
+        self.temp4 = choose_sound
         
     def stop_sound(self):
         pygame.mixer.music.stop()
@@ -131,7 +152,6 @@ class Interface:
             
             for i in range(len(results[0].boxes)):
                 body_keypoints = kpt_data[i][5:17]
-                print(kpt_data[i][2][0])
                 left_ankle = kpt_data[i][15][1]
                 left_knee = kpt_data[i][13][1]
                 right_ankle = kpt_data[i][16][1]
@@ -178,15 +198,15 @@ class Interface:
                         if(kpt_data[i][10][1] < (kpt_data[i][0][1]-((kpt_data[i][6][1]-kpt_data[i][4][1])/4))) & \
                             (kpt_data[i][9][1] < (kpt_data[i][0][1]-((kpt_data[i][5][1]-kpt_data[i][3][1])/4))):  # 動作一(雙手舉高舉直)
                             if(kpt_data[i][9][0] < frame_center) & (kpt_data[i][10][0] < frame_center):
-                                t = threading.Thread(target=self.play_sound_1, args=('1',))
+                                t = threading.Thread(target=self.play_sound_1_1, args=('1',))
                                 t.start()
                                 # self.play_sound('1')
                                 # CLIENT.send_message("/testtt", [1])
                             else:
-                                t = threading.Thread(target=self.play_sound_1, args=('1',))
+                                t = threading.Thread(target=self.play_sound_1_2, args=('a',))
                                 t.start()
                         else:
-                            if self.temp3 == '1':
+                            if self.temp3 == '1' or self.temp4 == '1':
                                 self.stop_sound()
                         
 
@@ -197,7 +217,7 @@ class Interface:
                                 a = threading.Thread(target=self.play_sound, args=('2',))
                                 a.start()
                             else:
-                                a = threading.Thread(target=self.play_sound, args=('2',))
+                                a = threading.Thread(target=self.play_sound_p2, args=('b',))
                                 a.start()
                             # self.play_sound('2')
                             # CLIENT.send_message("/testtt", [2]) 
@@ -209,7 +229,7 @@ class Interface:
                                 b = threading.Thread(target=self.play_sound, args=('3',))
                                 b.start()
                             else:
-                                b = threading.Thread(target=self.play_sound, args=('3',))
+                                b = threading.Thread(target=self.play_sound_p2, args=('c',))
                                 b.start()
                             # self.play_sound('3')
                             # CLIENT.send_message("/testtt", [3]) 
@@ -221,7 +241,7 @@ class Interface:
                                 c = threading.Thread(target=self.play_sound, args=('4',))
                                 c.start()
                             else:
-                                c = threading.Thread(target=self.play_sound, args=('4',))
+                                c = threading.Thread(target=self.play_sound_p2, args=('d',))
                                 c.start()
                             # self.play_sound('4')
                             # CLIENT.send_message("/testtt", [4]) 
@@ -236,7 +256,7 @@ class Interface:
                                 d.start()
                                 # CLIENT.send_message("/testtt", [5]) 
                             else:
-                                d = threading.Thread(target=self.play_sound, args=('5',))
+                                d = threading.Thread(target=self.play_sound_p2, args=('e',))
                                 d.start()
 
 
@@ -255,7 +275,7 @@ class Interface:
                                 # self.play_sound('6')
                         if self.a_2:
                             if (left_ankle > (right_ankle - ((right_ankle-right_knee)/5))):
-                                e_2 = threading.Thread(target=self.play_sound,args=('6'))
+                                e_2 = threading.Thread(target=self.play_sound_p2,args=('f'))
                                 e_2.start()
                                 self.a_2 = False
                                 
@@ -276,7 +296,7 @@ class Interface:
                                 # pydirectinput.keyUp('1')
                         if self.b_2:
                             if (right_ankle > (left_ankle - ((left_ankle-left_knee)/5))): ###################
-                                f_2= threading.Thread(target=self.play_sound,args=('7'))
+                                f_2= threading.Thread(target=self.play_sound_p2,args=('g'))
                                 f_2.start()
                                 self.b_2 = False
             
