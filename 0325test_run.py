@@ -1,7 +1,6 @@
 from ultralytics import YOLO
 import numpy as np
 import cv2
-import pydirectinput
 import pygame
 import tkinter as tk
 from PIL import Image, ImageTk
@@ -60,18 +59,6 @@ class Interface:
             angle = 360 - angle
         return angle
     
-    # def play_sound(self, choose_sound):  
-    #     temp1 = choose_sound
-    #     if temp1 == self.temp2:
-    #         return
-    #     sound_dict = {'1': r'C:\Users\user\Desktop\Merry\Voice\continue.mp3', '2': r'C:\Users\user\Desktop\Merry\Voice\A2.mp3', 
-    #                   '3': r'C:\Users\user\Desktop\Merry\Voice\A3.mp3', '4': r'C:\Users\user\Desktop\Merry\Voice\A4.mp3',  
-    #                   '5': r'C:\Users\user\Desktop\Merry\Voice\A5.mp3',
-    #                   '6': r'C:\Users\user\Desktop\Merry\Voice\蟋蟀V2_正規化.wav', '7': r'C:\Users\user\Desktop\Merry\Voice\蟋蟀V2_正規化.wav' }
-
-    #     # pygame.mixer.Sound.load(sound_dict[choose_sound])
-    #     pygame.mixer.Sound(sound_dict[choose_sound]).play()
-    #     self.temp2 = choose_sound
 
     def play_sound_1(self, choose_sound):  
         temp1 = choose_sound
