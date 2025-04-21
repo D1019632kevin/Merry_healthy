@@ -63,10 +63,10 @@ class Interface:
         temp1 = choose_sound
         if temp1 == self.temp2:
             return
-        sound_dict = {'1': r'C:\Users\user\Desktop\Merry\Voice\continue.mp3', '2': r'C:\Users\user\Desktop\Merry\Voice\A2.mp3', 
-                      '3': r'C:\Users\user\Desktop\Merry\Voice\A3.mp3', '4': r'C:\Users\user\Desktop\Merry\Voice\A4.mp3',  
-                      '5': r'C:\Users\user\Desktop\Merry\Voice\A5.mp3',
-                      '6': r'C:\Users\user\Desktop\Merry\Voice\蟋蟀V2_正規化.wav', '7': r'C:\Users\user\Desktop\Merry\Voice\蟋蟀V2_正規化.wav' }
+        sound_dict = {'1': r'C:\Users\user\Desktop\Merry\音樂健康\Voice\continue.mp3', '2': r'C:\Users\user\Desktop\Merry\音樂健康\Voice\A2.mp3', 
+                        '3': r'C:\Users\user\Desktop\Merry\音樂健康\Voice\A3.mp3', '4': r'C:\Users\user\Desktop\Merry\音樂健康\Voice\A4.mp3',  
+                        '5': r'C:\Users\user\Desktop\Merry\音樂健康\Voice\A5.mp3',
+                        '6': r'C:\Users\user\Desktop\Merry\音樂健康\Voice\蟋蟀V3_降噪正規化_左.wav', '7': r'C:\Users\user\Desktop\Merry\音樂健康\Voice\蟋蟀V3_降噪正規化_右.wav' }
 
         # pygame.mixer.Sound.load(sound_dict[choose_sound])
         pygame.mixer.Sound(sound_dict[choose_sound]).play()
@@ -76,10 +76,10 @@ class Interface:
         temp1 = choose_sound
         if temp1 == self.temp3:
             return
-        sound_dict = {'1': r'C:\Users\user\Desktop\Merry\Voice\continue.mp3', '2': r'C:\Users\user\Desktop\Merry\Voice\A2.mp3', 
-                        '3': r'C:\Users\user\Desktop\Merry\Voice\A3.mp3', '4': r'C:\Users\user\Desktop\Merry\Voice\A4.mp3',  
-                        '5': r'C:\Users\user\Desktop\Merry\Voice\A5.mp3',
-                        '6': r'C:\Users\user\Desktop\Merry\Voice\蟋蟀V2_正規化.wav', '7': r'C:\Users\user\Desktop\Merry\Voice\蟋蟀V2_正規化.wav' }
+        sound_dict = {'1': r'C:\Users\user\Desktop\Merry\音樂健康\Voice\continue.mp3', '2': r'C:\Users\user\Desktop\Merry\音樂健康\Voice\A2.mp3', 
+                        '3': r'C:\Users\user\Desktop\Merry\音樂健康\Voice\A3.mp3', '4': r'C:\Users\user\Desktop\Merry\音樂健康\Voice\A4.mp3',  
+                        '5': r'C:\Users\user\Desktop\Merry\音樂健康\Voice\A5.mp3',
+                        '6': r'C:\Users\user\Desktop\Merry\音樂健康\Voice\蟋蟀V3_降噪正規化_左.wav', '7': r'C:\Users\user\Desktop\Merry\音樂健康\Voice\蟋蟀V3_降噪正規化_右.wav' }
 
         pygame.mixer.music.load(sound_dict[choose_sound])
         pygame.mixer.music.play()
@@ -89,11 +89,10 @@ class Interface:
         temp1 = choose_sound
         if temp1 == self.temp3:
             return
-        sound_dict = {'1': r'C:\Users\user\Desktop\Merry\Voice\continue.mp3', '2': r'C:\Users\user\Desktop\Merry\Voice\A2.mp3', 
-                      '3': r'C:\Users\user\Desktop\Merry\Voice\A3.mp3', '4': r'C:\Users\user\Desktop\Merry\Voice\A4.mp3',  
-                      '5': r'C:\Users\user\Desktop\Merry\Voice\A5.mp3',
-                      '6': r'C:\Users\user\Desktop\Merry\Voice\蟋蟀V2_正規化_左.wav', '7': r'C:\Users\user\Desktop\Merry\Voice\蟋蟀V2_正規化_右.wav'}
-
+        sound_dict = {'1': r'C:\Users\user\Desktop\Merry\音樂健康\Voice\continue.mp3', '2': r'C:\Users\user\Desktop\Merry\音樂健康\Voice\A2.mp3', 
+                        '3': r'C:\Users\user\Desktop\Merry\音樂健康\Voice\A3.mp3', '4': r'C:\Users\user\Desktop\Merry\音樂健康\Voice\A4.mp3',  
+                        '5': r'C:\Users\user\Desktop\Merry\音樂健康\Voice\A5.mp3',
+                        '6': r'C:\Users\user\Desktop\Merry\音樂健康\Voice\蟋蟀V3_降噪正規化_左.wav', '7': r'C:\Users\user\Desktop\Merry\音樂健康\Voice\蟋蟀V3_降噪正規化_右.wav' }
         # pygame.mixer.Sound.load()
         pygame.mixer.Sound(sound_dict[choose_sound]).play()
         self.temp3 = choose_sound
@@ -188,10 +187,10 @@ class Interface:
                     if self.label:
                         if(kpt_data[i][10][1] < (kpt_data[i][0][1]-((kpt_data[i][6][1]-kpt_data[i][4][1])/4))) & \
                             (kpt_data[i][9][1] < (kpt_data[i][0][1]-((kpt_data[i][5][1]-kpt_data[i][3][1])/4))):  # 動作一(雙手舉高舉直)
-                            t = threading.Thread(target=self.play_sound_1, args=('1',))
-                            t.start()
+                            # t = threading.Thread(target=self.play_sound_1, args=('1',))
+                            # t.start()
                             # self.play_sound('1')
-                            # CLIENT.send_message("/testtt", [1])
+                            CLIENT.send_message("/testtt", [1])
                         else:
                             if self.temp3 == '1':
                                 self.stop_sound()
@@ -200,43 +199,44 @@ class Interface:
                         if(kpt_data[i][10][1] < kpt_data[i][6][1]) & (kpt_data[i][9][1] < kpt_data[i][5][1]) & \
                             (right_elbow_angle < 90) & (left_elbow_angle < 90) & (left_hand_should_angle > 140) & \
                             (np.abs(kpt_data[i][8][0]-kpt_data[i][7][0]) > (np.abs(kpt_data[i][6][0]-kpt_data[i][5][0])*2)):  # 動作二(雙手低舉)
-                            a = threading.Thread(target=self.play_sound, args=('2',))
-                            a.start()
+                            # a = threading.Thread(target=self.play_sound, args=('2',))
+                            # a.start()
                             # self.play_sound('2')
-                            # CLIENT.send_message("/testtt", [2]) 
+                            CLIENT.send_message("/testtt", [2]) 
                                               
 
                         if (right_elbow_angle > 90) & (kpt_data[i][10][1] < kpt_data[i][1][1]) & \
                             (kpt_data[i][9][1] > kpt_data[i][5][1]) & (left_body_angle < 40):  # 動作三:右手舉高
-                            b = threading.Thread(target=self.play_sound, args=('3',))
-                            b.start()
+                            # b = threading.Thread(target=self.play_sound, args=('3',))
+                            # b.start()
                             # self.play_sound('3')
-                            # CLIENT.send_message("/testtt", [3]) 
+                            CLIENT.send_message("/testtt", [3]) 
                             
 
                         if (left_elbow_angle > 90) & (kpt_data[i][9][1] < kpt_data[i][2][1]) & \
                               (kpt_data[i][10][1] > kpt_data[i][6][1]) & (right_body_angle < 40):  # 動作四:左手舉高
-                            c = threading.Thread(target=self.play_sound, args=('4',))
-                            c.start()
+                            # c = threading.Thread(target=self.play_sound, args=('4',))
+                            # c.start()
                             # self.play_sound('4')
-                            # CLIENT.send_message("/testtt", [4]) 
+                            CLIENT.send_message("/testtt", [4]) 
 
                         if (left_elbow_angle > 110) & (right_elbow_angle > 110) & (both_hands_angle > 130) & \
                             (right_body_angle > 70) & \
                             (left_body_angle > 70) & \
                             (np.abs(kpt_data[i][10][0]-kpt_data[i][9][0]) > (np.abs(kpt_data[i][6][0]-kpt_data[i][5][0])*2)):  # 動作五:雙手張開
                             # self.play_sound('5')
-                            d = threading.Thread(target=self.play_sound, args=('5',))
-                            d.start()
-                            # CLIENT.send_message("/testtt", [5]) 
+                            # d = threading.Thread(target=self.play_sound, args=('5',))
+                            # d.start()
+                            CLIENT.send_message("/testtt", [5]) 
 
                         if (left_ankle < (right_ankle - ((right_ankle-right_knee)/4))):  ##test
                             self.aa= True
                             CLIENT.send_message("/testtt", [6]) 
                         if self.aa:
                             if (left_ankle > (right_ankle - ((right_ankle-right_knee)/5))):
-                                e = threading.Thread(target=self.wait,args=('6'))
-                                e.start()
+                                # e = threading.Thread(target=self.wait,args=('6'))
+                                # e.start()
+
                                 self.aa = False
                                 # self.play_sound('6')
                                 # pydirectinput.keyDown('0')
@@ -249,8 +249,9 @@ class Interface:
                             CLIENT.send_message("/testtt", [7]) 
                         if self.bb:
                             if (right_ankle > (left_ankle - ((left_ankle-left_knee)/5))): ###################
-                                f = threading.Thread(target=self.wait,args=('7'))
-                                f.start()
+                                # f = threading.Thread(target=self.wait,args=('7'))
+                                # f.start()
+                                
                                 self.bb = False
                                 # pydirectinput.keyDown('1')
                                 # pydirectinput.keyUp('1')
@@ -281,7 +282,7 @@ class Interface:
 
 
 if __name__ == "__main__":    
-    model = YOLO(r"C:\Users\user\Desktop\Merry\weight\yolo11s-pose_fp32.engine")
+    model = YOLO(r"C:\Users\user\Desktop\Merry\音樂健康\weight\yolo11m-pose_fp16.engine")
     root = tk.Tk()
     video_path = 0 #r"C:\Users\user\Desktop\Merry\A2.mp4"
     label = False

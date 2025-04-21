@@ -64,10 +64,10 @@ class Interface:
         temp1 = choose_sound
         if temp1 == self.temp3:
             return
-        sound_dict = {'1': r'C:\Users\user\Desktop\Merry\Voice\continue.mp3', '2': r'C:\Users\user\Desktop\Merry\Voice\A2.mp3', 
-                        '3': r'C:\Users\user\Desktop\Merry\Voice\A3.mp3', '4': r'C:\Users\user\Desktop\Merry\Voice\A4.mp3',  
-                        '5': r'C:\Users\user\Desktop\Merry\Voice\A5.mp3',
-                        '6': r'C:\Users\user\Desktop\Merry\Voice\蟋蟀V3_降噪正規化_右.wav', '7': r'C:\Users\user\Desktop\Merry\Voice\蟋蟀V3_降噪正規化_左.wav' }
+        sound_dict = {'1': r'C:\Users\user\Desktop\Merry\音樂健康\Voice\continue.mp3', '2': r'C:\Users\user\Desktop\Merry\音樂健康\Voice\A2.mp3', 
+                        '3': r'C:\Users\user\Desktop\Merry\音樂健康\Voice\A3.mp3', '4': r'C:\Users\user\Desktop\Merry\音樂健康\Voice\A4.mp3',  
+                        '5': r'C:\Users\user\Desktop\Merry\音樂健康\Voice\A5.mp3',
+                        '6': r'C:\Users\user\Desktop\Merry\音樂健康\Voice\蟋蟀V3_降噪正規化_左.wav', '7': r'C:\Users\user\Desktop\Merry\音樂健康\Voice\蟋蟀V3_降噪正規化_右.wav' }
 
         pygame.mixer.music.load(sound_dict[choose_sound])
         pygame.mixer.music.play()
@@ -77,10 +77,10 @@ class Interface:
         temp1 = choose_sound
         if temp1 == self.temp3:
             return
-        sound_dict = {'1': r'C:\Users\user\Desktop\Merry\Voice\continue.mp3', '2': r'C:\Users\user\Desktop\Merry\Voice\A2.mp3', 
-                        '3': r'C:\Users\user\Desktop\Merry\Voice\A3.mp3', '4': r'C:\Users\user\Desktop\Merry\Voice\A4.mp3',  
-                        '5': r'C:\Users\user\Desktop\Merry\Voice\A5.mp3',
-                        '6': r'C:\Users\user\Desktop\Merry\Voice\A2.mp3', '7': r'C:\Users\user\Desktop\Merry\Voice\A5.mp3' }
+        sound_dict = {'1': r'C:\Users\user\Desktop\Merry\音樂健康\Voice\continue.mp3', '2': r'C:\Users\user\Desktop\Merry\音樂健康\Voice\A2.mp3', 
+                        '3': r'C:\Users\user\Desktop\Merry\音樂健康\Voice\A3.mp3', '4': r'C:\Users\user\Desktop\Merry\音樂健康\Voice\A4.mp3',  
+                        '5': r'C:\Users\user\Desktop\Merry\音樂健康\Voice\A5.mp3',
+                        '6': r'C:\Users\user\Desktop\Merry\音樂健康\Voice\蟋蟀V3_降噪正規化_左.wav', '7': r'C:\Users\user\Desktop\Merry\音樂健康\Voice\蟋蟀V3_降噪正規化_右.wav' }
 
         # pygame.mixer.Sound.load()
         pygame.mixer.Sound(sound_dict[choose_sound]).play()
@@ -285,7 +285,7 @@ class Interface:
 
 
 if __name__ == "__main__":    
-    model = YOLO(r"C:\Users\user\Desktop\Merry\weight\yolo11m-pose_fp16.engine")
+    model = YOLO(r"C:\Users\user\Desktop\Merry\音樂健康\weight\yolo11m-pose_fp16.engine")
     root = tk.Tk()
     video_path = 0 #r"C:\Users\user\Desktop\Merry\A2.mp4"
     label = False
