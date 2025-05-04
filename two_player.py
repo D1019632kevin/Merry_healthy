@@ -58,6 +58,8 @@ class Interface:
     
     def play_sound(self, choose_sound):  
         temp1 = choose_sound
+        x = int(temp1)
+        CLIENT.send_message("/player1", [x])
         if temp1 == self.temp2:
             return
         sound_dict = {'1': r'C:\Users\user\Desktop\Merry\音樂健康\Voice\continue.mp3', '2': r'C:\Users\user\Desktop\Merry\音樂健康\Voice\A2.mp3', 
@@ -72,12 +74,15 @@ class Interface:
 
     def play_sound_p2(self, choose_sound_p2):  
         temp11 = choose_sound_p2
+        y = int(temp11)
+        CLIENT.send_message("/player2", [y])
         if temp11 == self.temp5:
             return
-        sound_dict = {'a': r'C:\Users\user\Desktop\Merry\音樂健康\Voice\continue.mp3', 'b': r'C:\Users\user\Desktop\Merry\音樂健康\Voice\A2.mp3', 
-                      'c': r'C:\Users\user\Desktop\Merry\音樂健康\Voice\A3.mp3', 'd': r'C:\Users\user\Desktop\Merry\音樂健康\Voice\A4.mp3',  
-                      'e': r'C:\Users\user\Desktop\Merry\音樂健康\Voice\A5.mp3',
-                      'f': r'C:\Users\user\Desktop\Merry\音樂健康\Voice\蟋蟀V3_降噪正規化_左.wav', 'g': r'C:\Users\user\Desktop\Merry\音樂健康\Voice\蟋蟀V3_降噪正規化_右.wav' }
+        sound_dict = {'1': r'C:\Users\user\Desktop\Merry\音樂健康\Voice\continue.mp3', '2': r'C:\Users\user\Desktop\Merry\音樂健康\Voice\A2.mp3', 
+                      '3': r'C:\Users\user\Desktop\Merry\音樂健康\Voice\A3.mp3', '4': r'C:\Users\user\Desktop\Merry\音樂健康\Voice\A4.mp3',  
+                      '5': r'C:\Users\user\Desktop\Merry\音樂健康\Voice\A5.mp3',
+                      '6': r'C:\Users\user\Desktop\Merry\音樂健康\Voice\蟋蟀V3_降噪正規化_左.wav', '7': r'C:\Users\user\Desktop\Merry\音樂健康\Voice\蟋蟀V3_降噪正規化_右.wav',
+                      '8':r'C:\Users\user\Desktop\Merry\音樂健康\Voice\蟋蟀V3_降噪正規化_右.wav' }
 
         # pygame.mixer.Sound.load(sound_dict[choose_sound])
         pygame.mixer.Sound(sound_dict[choose_sound_p2]).play()
@@ -85,6 +90,8 @@ class Interface:
 
     def play_sound_1_1(self, choose_sound_1_1):  
         temp111 = choose_sound_1_1
+        z = int(temp111)
+        CLIENT.send_message("/player1", [z])
         if temp111 == self.temp3:
             return
         sound_dict = {'1': r'C:\Users\user\Desktop\Merry\音樂健康\Voice\continue.mp3', '2': r'C:\Users\user\Desktop\Merry\音樂健康\Voice\A2.mp3', 
@@ -97,12 +104,15 @@ class Interface:
         self.temp3 = choose_sound_1_1
     def play_sound_1_2(self, choose_sound_1_2):  
         temp1111 = choose_sound_1_2
+        w = int(temp1111)
+        CLIENT.send_message("/player2", [w])
         if temp1111 == self.temp4:
             return
-        sound_dict = {'a': r'C:\Users\user\Desktop\Merry\音樂健康\Voice\continue.mp3', 'b': r'C:\Users\user\Desktop\Merry\音樂健康\Voice\A2.mp3', 
-                        'c': r'C:\Users\user\Desktop\Merry\音樂健康\Voice\A3.mp3', 'd': r'C:\Users\user\Desktop\Merry\音樂健康\Voice\A4.mp3',  
-                        'e': r'C:\Users\user\Desktop\Merry\音樂健康\Voice\A5.mp3',
-                        'f': r'C:\Users\user\Desktop\Merry\音樂健康\Voice\蟋蟀V3_降噪正規化_左.wav', 'g': r'C:\Users\user\Desktop\Merry\音樂健康\Voice\蟋蟀V3_降噪正規化_右.wav' }
+        sound_dict = {'1': r'C:\Users\user\Desktop\Merry\音樂健康\Voice\continue.mp3', '2': r'C:\Users\user\Desktop\Merry\音樂健康\Voice\A2.mp3', 
+                      '3': r'C:\Users\user\Desktop\Merry\音樂健康\Voice\A3.mp3', '4': r'C:\Users\user\Desktop\Merry\音樂健康\Voice\A4.mp3',  
+                      '5': r'C:\Users\user\Desktop\Merry\音樂健康\Voice\A5.mp3',
+                      '6': r'C:\Users\user\Desktop\Merry\音樂健康\Voice\蟋蟀V3_降噪正規化_左.wav', '7': r'C:\Users\user\Desktop\Merry\音樂健康\Voice\蟋蟀V3_降噪正規化_右.wav',
+                      '8':r'C:\Users\user\Desktop\Merry\音樂健康\Voice\蟋蟀V3_降噪正規化_右.wav' }
 
         pygame.mixer.music.load(sound_dict[choose_sound_1_2])
         pygame.mixer.music.play()
@@ -199,20 +209,20 @@ class Interface:
                         if(kpt_data[i][10][1] < (kpt_data[i][0][1]-((kpt_data[i][6][1]-kpt_data[i][4][1])/1.1))) & \
                             (kpt_data[i][9][1] < (kpt_data[i][0][1]-((kpt_data[i][5][1]-kpt_data[i][3][1])/1.1))):  # 動作一(雙手舉高舉直)
                             if(kpt_data[i][9][0] < frame_center) & (kpt_data[i][10][0] < frame_center):
-                                CLIENT.send_message("/player1", [1])
+                                # CLIENT.send_message("/player1", [1])
                                 t_1 = threading.Thread(target=self.play_sound_1_1, args=('1',))
                                 t_1.start()
                                 # self.play_sound('1')
                                 
                             elif(kpt_data[i][9][0] > frame_center) & (kpt_data[i][10][0] > frame_center):
-                                CLIENT.send_message("/player2", [1])
-                                t_2 = threading.Thread(target=self.play_sound_1_2, args=('a',))
+                                # CLIENT.send_message("/player2", [1])
+                                t_2 = threading.Thread(target=self.play_sound_1_2, args=('1',))
                                 t_2.start()
                                 
                         else:
                             if self.temp3 == '1' :
                                 self.stop_sound()
-                            elif self.temp4 == 'a':
+                            elif self.temp4 == '1':
                                 self.stop_sound()
                         
 
@@ -222,11 +232,11 @@ class Interface:
                             if(kpt_data[i][9][0] < frame_center) & (kpt_data[i][10][0] < frame_center):
                                 a_1 = threading.Thread(target=self.play_sound, args=('2',))
                                 a_1.start()
-                                CLIENT.send_message("/player1", [2])
+                                # CLIENT.send_message("/player1", [2])
                             elif(kpt_data[i][9][0] > frame_center) & (kpt_data[i][10][0] > frame_center):
-                                a_2 = threading.Thread(target=self.play_sound_p2, args=('b',))
+                                a_2 = threading.Thread(target=self.play_sound_p2, args=('2',))
                                 a_2.start()
-                                CLIENT.send_message("/player2", [2])
+                                # CLIENT.send_message("/player2", [2])
                             # self.play_sound('2')
                             # CLIENT.send_message("/testtt", [2]) 
                                               
@@ -236,11 +246,11 @@ class Interface:
                             if(kpt_data[i][9][0] < frame_center) & (kpt_data[i][10][0] < frame_center):
                                 b_1 = threading.Thread(target=self.play_sound, args=('3',))
                                 b_1.start()
-                                CLIENT.send_message("/player1", [3])
+                                # CLIENT.send_message("/player1", [3])
                             elif(kpt_data[i][9][0] > frame_center) & (kpt_data[i][10][0] > frame_center):
-                                b_2 = threading.Thread(target=self.play_sound_p2, args=('c',))
+                                b_2 = threading.Thread(target=self.play_sound_p2, args=('3',))
                                 b_2.start()
-                                CLIENT.send_message("/player2", [3])
+                                # CLIENT.send_message("/player2", [3])
                             # self.play_sound('3')
                             # CLIENT.send_message("/testtt", [3]) 
                             
@@ -250,11 +260,11 @@ class Interface:
                             if(kpt_data[i][9][0] < frame_center) & (kpt_data[i][10][0] < frame_center):
                                 c_1 = threading.Thread(target=self.play_sound, args=('4',))
                                 c_1.start()
-                                CLIENT.send_message("/player1", [4])
+                                # CLIENT.send_message("/player1", [4])
                             elif(kpt_data[i][9][0] > frame_center) & (kpt_data[i][10][0] > frame_center):
-                                c_2 = threading.Thread(target=self.play_sound_p2, args=('d',))
+                                c_2 = threading.Thread(target=self.play_sound_p2, args=('4',))
                                 c_2.start()
-                                CLIENT.send_message("/player2", [4])
+                                # CLIENT.send_message("/player2", [4])
                             # self.play_sound('4')
                             # CLIENT.send_message("/testtt", [4]) 
 
@@ -266,12 +276,12 @@ class Interface:
                                 # self.play_sound('5')
                                 d_1 = threading.Thread(target=self.play_sound, args=('5',))
                                 d_1.start()
-                                CLIENT.send_message("/player1", [5])
+                                # CLIENT.send_message("/player1", [5])
                                 # CLIENT.send_message("/testtt", [5]) 
                             elif(kpt_data[i][9][0] > frame_center) & (kpt_data[i][10][0] > frame_center):
-                                d_2 = threading.Thread(target=self.play_sound_p2, args=('e',))
+                                d_2 = threading.Thread(target=self.play_sound_p2, args=('5',))
                                 d_2.start()
-                                CLIENT.send_message("/player2", [5])
+                                # CLIENT.send_message("/player2", [5])
 
 
                         if (left_ankle < (right_ankle - ((right_ankle-right_knee)/4))):  ##test
@@ -283,14 +293,14 @@ class Interface:
                             if (left_ankle > (right_ankle - ((right_ankle-right_knee)/5))):
                                 e_1 = threading.Thread(target=self.play_sound,args=('6'))
                                 e_1.start()
-                                CLIENT.send_message("/player1", [6]) 
+                                # CLIENT.send_message("/player1", [6]) 
                                 self.aa_1 = False
                                 # self.play_sound('6')
                         if self.aa_2:
                             if (left_ankle > (right_ankle - ((right_ankle-right_knee)/5))):
-                                e_2 = threading.Thread(target=self.play_sound_p2,args=('f'))
+                                e_2 = threading.Thread(target=self.play_sound_p2,args=('6'))
                                 e_2.start()
-                                CLIENT.send_message("/player2", [6])
+                                # CLIENT.send_message("/player2", [6])
                                 self.aa_2 = False
                                 
 
@@ -303,15 +313,15 @@ class Interface:
                             if (right_ankle > (left_ankle - ((left_ankle-left_knee)/5))): ###################
                                 f_1 = threading.Thread(target=self.play_sound,args=('7'))
                                 f_1.start()
-                                CLIENT.send_message("/player1", [7]) 
+                                # CLIENT.send_message("/player1", [7]) 
                                 self.bb_1 = False
                                 # pydirectinput.keyDown('1')
                                 # pydirectinput.keyUp('1')
                         if self.bb_2:
                             if (right_ankle > (left_ankle - ((left_ankle-left_knee)/5))): ###################
-                                f_2= threading.Thread(target=self.play_sound_p2,args=('g'))
+                                f_2= threading.Thread(target=self.play_sound_p2,args=('7'))
                                 f_2.start()
-                                CLIENT.send_message("/player2", [7])
+                                # CLIENT.send_message("/player2", [7])
                                 self.bb_2 = False
 
                         if (kpt_data[i][9][1] > kpt_data[i][13][1]) & (kpt_data[i][10][1] > kpt_data[i][14][1]):

@@ -1,6 +1,7 @@
 from ultralytics import YOLO
 import numpy as np
 import cv2
+import pydirectinput
 import pygame
 import tkinter as tk
 from PIL import Image, ImageTk
@@ -9,26 +10,36 @@ from threading import Timer
 from pythonosc import udp_client
 import time
 import matplotlib.pyplot as plt
-#我在測試
+
 IP = "192.168.0.90" 
 PORT = 7676
 CLIENT = udp_client.SimpleUDPClient(IP, PORT)
+WIDTH = 640
+HEIGHT = 480
+FPS = 90
+
 pygame.mixer.init()
 class Interface:
-    def __init__(self, model, video_path, root, label):
+    def __init__(self, model, video_path, video_path_2, root, label):
+        self.cap = None
         self.model = model
+        self.captwo = None
+        self.paused = False
         self.video_path = video_path
+        self.video_path_2 = video_path_2
         self.root = root
         self.label = label
+        self.prev_time = time.time()
         self.sound_dict = {}
         self.aa= False
         self.bb = False
-        self.continous = False
         self.root.geometry("1920x1080")
         self.root.title("人體姿態偵測")
         self.temp2 = 0
         self.temp3 = 0
         self.fpstemp = []
+        self.framecounter = 0
+        self.fps = 0
         
         self.title_frame = tk.Frame(root)
         # self.title_frame.pack(expand=True, fill="both")
@@ -39,14 +50,23 @@ class Interface:
         self.video_frame.pack(expand=True, fill="both")
     
         self.video = tk.Label(self.video_frame)
-        self.video.pack(pady=(0, 10))
+        self.video.pack(side= "left",pady=(0, 10))
+        self.video2 = tk.Label(self.video_frame)
+        self.video2.pack( padx=10)
 
         self.testButton = tk.Button(self.root, text='開始辨識', bd=6, width=15, height=2, 
                             font=('標楷體', 20), command=self.play_video)
         self.testButton.pack(anchor="center", pady=(20, 40))
         
-        self.endButton = tk.Button(self.root, text='結束', bd=6, width=15, height=2, 
-                            font=('標楷體', 20), command=self.root.destroy)  #command=self.fps_visiualize
+        self.endButton = tk.Button(self.root, text='暫停', bd=6, width=15, height=2, 
+                            font=('標楷體', 20), command=self.toggle_pause)  #command=self.fps_visiualize
+        
+        self.quitButton = tk.Button(self.root, text='結束', bd=6, width=15, height=2,
+                            font=('標楷體', 20), command=self.root.destroy)
+
+
+    def toggle_pause(self):
+        self.paused = not self.paused
     
     def calculate_angle(self, a, b, c):
         a = np.array(a)  # 頭
@@ -59,6 +79,18 @@ class Interface:
             angle = 360 - angle
         return angle
     
+    def play_sound(self, choose_sound):  
+        temp1 = choose_sound
+        if temp1 == self.temp2:
+            return
+        sound_dict = {'1': r'C:\Users\user\Desktop\Merry\音樂健康\Voice\continue.mp3', '2': r'C:\Users\user\Desktop\Merry\音樂健康\Voice\A2.mp3', 
+                        '3': r'C:\Users\user\Desktop\Merry\音樂健康\Voice\A3.mp3', '4': r'C:\Users\user\Desktop\Merry\音樂健康\Voice\A4.mp3',  
+                        '5': r'C:\Users\user\Desktop\Merry\音樂健康\Voice\A5.mp3',
+                        '6': r'C:\Users\user\Desktop\Merry\音樂健康\Voice\蟋蟀V3_降噪正規化_左.wav', '7': r'C:\Users\user\Desktop\Merry\音樂健康\Voice\蟋蟀V3_降噪正規化_右.wav' }
+
+        # pygame.mixer.Sound.load(sound_dict[choose_sound])
+        pygame.mixer.Sound(sound_dict[choose_sound]).play()
+        self.temp2 = choose_sound
 
     def play_sound_1(self, choose_sound):  
         temp1 = choose_sound
@@ -81,68 +113,57 @@ class Interface:
                         '3': r'C:\Users\user\Desktop\Merry\音樂健康\Voice\A3.mp3', '4': r'C:\Users\user\Desktop\Merry\音樂健康\Voice\A4.mp3',  
                         '5': r'C:\Users\user\Desktop\Merry\音樂健康\Voice\A5.mp3',
                         '6': r'C:\Users\user\Desktop\Merry\音樂健康\Voice\蟋蟀V3_降噪正規化_左.wav', '7': r'C:\Users\user\Desktop\Merry\音樂健康\Voice\蟋蟀V3_降噪正規化_右.wav' }
-
         # pygame.mixer.Sound.load()
         pygame.mixer.Sound(sound_dict[choose_sound]).play()
         self.temp3 = choose_sound
 
     def stop_sound(self):
         pygame.mixer.music.stop()
-        self.temp3 = None 
-        CLIENT.send_message("/stop", [0]) 
-
-    #def wait(self,num):
+        self.temp3 = None  
+    def wait(self,num):
         # time.sleep(0.2)
-        #self.play_sound_2(num)
+        self.play_sound_2(num)
 
-    def time_counter(self):
-        now_time = time.time()
-        while self.continous:
-            current = time.time() - now_time
-            # CLIENT.send_message("/start", [int(current)*0.1])
-            time.sleep(2)  
-
-
-    def play_video(self):
-        self.testButton.forget()
-        cap = cv2.VideoCapture(self.video_path, cv2.CAP_DSHOW) #,cv2.CAP_DSHOW
-        cap.set(cv2.CAP_PROP_FRAME_WIDTH, 640)
-        cap.set(cv2.CAP_PROP_FRAME_HEIGHT, 480) 
-        cap.set(cv2.CAP_PROP_FOURCC, cv2.VideoWriter_fourcc(*'MJPG'))
-        cap.set(cv2.CAP_PROP_FPS, 60)
-        
-
-        print(cap.get(cv2.CAP_PROP_FRAME_WIDTH), cap.get(cv2.CAP_PROP_FRAME_HEIGHT))
-        framecounter = 0
-        self.endButton.pack(anchor="center", pady=(5, 10))
-        now = time.time()
-        while cap.isOpened():
-            success, frame = cap.read()
+    def update_frame(self):
+        if not self.paused:
+            success, frame = self.cap.read()
+            success2, frame2 = self.cap2.read()
             if not success:
-                continue
-            current = time.time()
-            if framecounter % 5 == 0 :
-                fps = 1 / (current - now)
-                self.fpstemp.append(fps)
-            now = current
+                return
+            
+            if self.framecounter == 5 :
+                current = time.time()
+                self.fps = 5 / (current - self.prev_time)
+                self.fpstemp.append(self.fps)
+                self.prev_time = current
+                self.framecounter = 0
 
-            frame = cv2.resize(frame, (640, 480))
+            cv2.putText(frame, f"fps: {self.fps:.2f}", (10, 50), cv2.FONT_HERSHEY_SIMPLEX, 2, (0, 255, 0), 2)
+
+            frame = cv2.resize(frame, (480, 270))
+            frame2 = cv2.resize(frame2, (270, 480))
             results = self.model(frame, conf=0.5, classes=0)
             # frame = results[0].plot()
-  
-            cv2.putText(frame, f"fps: {fps:.2f}", (10, 30), cv2.FONT_HERSHEY_SIMPLEX, 1, (0, 255, 0), 2)
+
+                
 
             kpt_temp = results[0].keypoints.xy 
             kpt_data = kpt_temp.cpu().numpy()  # 關鍵點data
             # cv2.line(frame, (frame.shape[1] // 2, 0), (frame.shape[1] // 2, frame.shape[1]), (0, 0, 255), 5)
 
-            cv2image = cv2.cvtColor(frame, cv2.COLOR_BGR2RGBA) 
-            img = Image.fromarray(cv2image)
+            frame = cv2.cvtColor(frame, cv2.COLOR_BGR2RGB) 
+            frame2 = cv2.cvtColor(frame2, cv2.COLOR_BGR2RGB)
+
+            img = Image.fromarray(frame)
             imgtk = ImageTk.PhotoImage(image=img)
-            
             self.video.imgtk = imgtk
             self.video.configure(image=imgtk)
-            self.video.update()
+
+            img2 = Image.fromarray(frame2)
+            imgtk2 = ImageTk.PhotoImage(image=img2)
+            self.video2.imgtk = imgtk2
+            self.video2.configure(image=imgtk2)
+
             
             for i in range(len(results[0].boxes)):
                 body_keypoints = kpt_data[i][5:17]
@@ -191,88 +212,97 @@ class Interface:
                     if self.label:
                         if(kpt_data[i][10][1] < (kpt_data[i][0][1]-((kpt_data[i][6][1]-kpt_data[i][4][1])/1.1))) & \
                             (kpt_data[i][9][1] < (kpt_data[i][0][1]-((kpt_data[i][5][1]-kpt_data[i][3][1])/1.1))):  # 動作一(雙手舉高舉直)
-                            self.continous = True
                             t = threading.Thread(target=self.play_sound_1, args=('1',))
                             t.start()
-                            CLIENT.send_message("/testtt", [1]) #type
-                            CLIENT.send_message("/start", [1])
                             # self.play_sound('1')
-                            # t2 = threading.Thread(target=self.time_counter)
-                            # t2.start()
-                            
+                            # CLIENT.send_message("/player3", [1])
                         else:
-                            if self.continous:  #self.temp3 == '1'
+                            if self.temp3 == '1':
                                 self.stop_sound()
-                                self.continous = False
-                                
                         
 
                         if(kpt_data[i][10][1] < kpt_data[i][6][1]) & (kpt_data[i][9][1] < kpt_data[i][5][1]) & \
                             (right_elbow_angle < 90) & (left_elbow_angle < 90) & (left_hand_should_angle > 140) & \
                             (np.abs(kpt_data[i][8][0]-kpt_data[i][7][0]) > (np.abs(kpt_data[i][6][0]-kpt_data[i][5][0])*2)):  # 動作二(雙手低舉)
-
-                            a = threading.Thread(target=self.play_sound_2, args=('2',))
+                            a = threading.Thread(target=self.play_sound, args=('2',))
                             a.start()
                             # self.play_sound('2')
-                            CLIENT.send_message("/player3", [2]) 
-                                              
+                            # CLIENT.send_message("/player3", [2]) 
+                                                
 
                         if (right_elbow_angle > 90) & (kpt_data[i][10][1] < kpt_data[i][1][1]) & \
                             (kpt_data[i][9][1] > kpt_data[i][5][1]) & (left_body_angle < 40):  # 動作三:右手舉高
-                            b = threading.Thread(target=self.play_sound_2, args=('3',))
+                            b = threading.Thread(target=self.play_sound, args=('3',))
                             b.start()
                             # self.play_sound('3')
-                            CLIENT.send_message("/player3", [3]) 
+                            # CLIENT.send_message("/player3", [3]) 
                             
 
                         if (left_elbow_angle > 90) & (kpt_data[i][9][1] < kpt_data[i][2][1]) & \
-                              (kpt_data[i][10][1] > kpt_data[i][6][1]) & (right_body_angle < 40):  # 動作四:左手舉高
-                            c = threading.Thread(target=self.play_sound_2, args=('4',))
+                                (kpt_data[i][10][1] > kpt_data[i][6][1]) & (right_body_angle < 40):  # 動作四:左手舉高
+                            c = threading.Thread(target=self.play_sound, args=('4',))
                             c.start()
                             # self.play_sound('4')
-                            CLIENT.send_message("/player3", [4]) 
+                            # CLIENT.send_message("/player3", [4]) 
 
-                        if (left_elbow_angle > 130) & (right_elbow_angle > 130) & (both_hands_angle > 130) & \
+                        if (left_elbow_angle > 110) & (right_elbow_angle > 110) & (both_hands_angle > 130) & \
                             (right_body_angle > 70) & \
                             (left_body_angle > 70) & \
                             (np.abs(kpt_data[i][10][0]-kpt_data[i][9][0]) > (np.abs(kpt_data[i][6][0]-kpt_data[i][5][0])*3.2)):  # 動作五:雙手張開
                             # self.play_sound('5')
-                            d = threading.Thread(target=self.play_sound_2, args=('5',))
+                            d = threading.Thread(target=self.play_sound, args=('5',))
                             d.start()
-                            CLIENT.send_message("/player3", [5]) 
+                            # CLIENT.send_message("/player3", [5]) 
 
-                        if (left_ankle < (right_ankle - ((right_ankle-right_knee)/7))):  ##test
+                        if (left_ankle < (right_ankle - ((right_ankle-right_knee)/4))):  ##test
                             self.aa= True
-                            
+                            # CLIENT.send_message("/player3", [6]) 
                         if self.aa:
-                            if (left_ankle > (right_ankle - ((right_ankle-right_knee)/8))):
-                                e = threading.Thread(target=self.play_sound_2,args=('6'))
+                            if (left_ankle > (right_ankle - ((right_ankle-right_knee)/5))):
+                                e = threading.Thread(target=self.wait,args=('6'))
                                 e.start()
+
                                 self.aa = False
-                                
                                 # self.play_sound('6')
                                 # pydirectinput.keyDown('0')
                                 # pydirectinput.keyUp('0')
-                                CLIENT.send_message("/player3", [6]) 
+                                
 
 
-                        if (right_ankle < (left_ankle - ((left_ankle-left_knee)/7))):  ##test
+                        if (right_ankle < (left_ankle - ((left_ankle-left_knee)/4))):  ##test
                             self.bb = True
-                            
+                            # CLIENT.send_message("/player3", [7]) 
                         if self.bb:
-                            if (right_ankle > (left_ankle - ((left_ankle-left_knee)/8))): ###################
-                                f = threading.Thread(target=self.play_sound_2,args=('7'))
+                            if (right_ankle > (left_ankle - ((left_ankle-left_knee)/5))): ###################
+                                f = threading.Thread(target=self.wait,args=('7'))
                                 f.start()
+                                
                                 self.bb = False
+                                # pydirectinput.keyDown('1')
+                                # pydirectinput.keyUp('1')
+            self.framecounter += 1      
+        self.video_frame.after(1, self.update_frame)    
+        
+        # if cv2.waitKey(1) & 0xFF == ord('q'):
+        #     return
 
-                                CLIENT.send_message("/player3", [7]) 
-                    
-            framecounter += 1
-            if cv2.waitKey(1) & 0xFF == ord('q'):
-                break
+    def play_video(self):
+        self.testButton.forget()
+        self.cap = cv2.VideoCapture(self.video_path,cv2.CAP_DSHOW) #,cv2.CAP_DSHOW ,cv2.CAP_MSMF
+        self.cap2 = cv2.VideoCapture(self.video_path_2)
+        self.cap.set(cv2.CAP_PROP_FRAME_WIDTH, WIDTH)
+        self.cap.set(cv2.CAP_PROP_FRAME_HEIGHT, HEIGHT)
+        self.cap.set(cv2.CAP_PROP_FPS, FPS)
+        self.cap.set(cv2.CAP_PROP_FOURCC, cv2.VideoWriter_fourcc(*'MJPG'))
 
-        cap.release()
-        cv2.destroyAllWindows()
+        self.endButton.pack(anchor="w", pady=(5, 10))
+        self.quitButton.pack(anchor="e", pady=(5, 10))
+        
+        
+        self.update_frame()
+            
+
+
 
     def fps_visiualize(self):
         plt.figure(figsize=(10, 5))
@@ -294,7 +324,8 @@ class Interface:
 if __name__ == "__main__":    
     model = YOLO(r"C:\Users\user\Desktop\Merry\音樂健康\weight\yolo11m-pose_fp16.engine")
     root = tk.Tk()
-    video_path = 0 #r"C:\Users\user\Desktop\Merry\音樂健康\WIN_20250424_11_01_38_Pro.mp4"
+    video_path = 0 #r"C:\Users\user\Desktop\Merry\音樂健康\test.mp4"
+    video_path_2 = r"C:\Users\user\Desktop\Merry\音樂健康\test.mp4"
     label = False
-    app = Interface(model, video_path, root, label)
+    app = Interface(model, video_path, video_path_2, root, label)
     root.mainloop()
