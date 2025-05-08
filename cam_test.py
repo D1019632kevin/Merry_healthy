@@ -8,7 +8,7 @@ from PyQt5.QtCore import QTimer
 from ui_main import Ui_Game
 from ultralytics import YOLO
 import numpy as np
-import pydirectinput
+#import pydirectinput #windows only
 import pygame
 import threading
 from threading import Timer
@@ -46,11 +46,11 @@ class MainApp(QtWidgets.QMainWindow):
         self.ui = Ui_Game()
         self.ui.setupUi(self)
 
-        self.gif = QMovie(r"C:\Users\user\Desktop\Merry\音樂健康\gif素材\red_fire.gif")
-        self.bluegif = QMovie(r"C:\Users\user\Desktop\Merry\音樂健康\gif素材\blue_fire.gif")
+        self.gif = QMovie(r"/home/orangepi/Desktop/Merry_healthy/gif素材/red_fire.gif")
+        self.bluegif = QMovie(r"/home/orangepi/Desktop/Merry_healthy/gif素材/blue_fire.gif")
 
 
-        self.model = YOLO(r'C:\Users\user\Desktop\Merry\音樂健康\weight\yolo11m-pose_fp16.engine')
+        self.model = YOLO(r'weight/yolo11s-pose_rknn_model')
         self.video_cap = self.camera_cap = None
         self.lock1 = self.lock2 = self.lock3 = self.lock4= self.lock5=True
 
@@ -80,10 +80,10 @@ class MainApp(QtWidgets.QMainWindow):
         temp1 = choose_sound
         if temp1 == self.temp2:
             return
-        sound_dict = {'1': r'C:\Users\user\Desktop\Merry\音樂健康\Voice\continue.mp3', '2': r'C:\Users\user\Desktop\Merry\音樂健康\Voice\A2.mp3', 
-                        '3': r'C:\Users\user\Desktop\Merry\音樂健康\Voice\A3.mp3', '4': r'C:\Users\user\Desktop\Merry\音樂健康\Voice\A4.mp3',  
-                        '5': r'C:\Users\user\Desktop\Merry\音樂健康\Voice\A5.mp3',
-                        '6': r'C:\Users\user\Desktop\Merry\音樂健康\Voice\蟋蟀V3_降噪正規化_左.wav', '7': r'C:\Users\user\Desktop\Merry\音樂健康\Voice\蟋蟀V3_降噪正規化_右.wav' }
+        sound_dict = {'1': r'/home/orangepi/Desktop/Merry_healthy/Voice/continue.mp3', '2': r'/home/orangepi/Desktop/Merry_healthy/Voice/A2.mp3', 
+                        '3': r'/home/orangepi/Desktop/Merry_healthy/Voice/A3.mp3', '4': r'/home/orangepi/Desktop/Merry_healthy/Voice/A4.mp3',  
+                        '5': r'/home/orangepi/Desktop/Merry_healthy/Voice/A5.mp3',
+                        '6': r'/home/orangepi/Desktop/Merry_healthy/Voice/蟋蟀V3_降噪正規化_左.wav', '7': r'/home/orangepi/Desktop/Merry_healthy/Voice/蟋蟀V3_降噪正規化_右.wav' }
 
         pygame.mixer.Sound(sound_dict[choose_sound]).play()
         self.temp2 = choose_sound
@@ -92,10 +92,10 @@ class MainApp(QtWidgets.QMainWindow):
         temp1 = choose_sound
         if temp1 == self.temp3:
             return
-        sound_dict = {'1': r'C:\Users\user\Desktop\Merry\音樂健康\Voice\continue.mp3', '2': r'C:\Users\user\Desktop\Merry\音樂健康\Voice\A2.mp3', 
-                        '3': r'C:\Users\user\Desktop\Merry\音樂健康\Voice\A3.mp3', '4': r'C:\Users\user\Desktop\Merry\音樂健康\Voice\A4.mp3',  
-                        '5': r'C:\Users\user\Desktop\Merry\音樂健康\Voice\A5.mp3',
-                        '6': r'C:\Users\user\Desktop\Merry\音樂健康\Voice\蟋蟀V3_降噪正規化_左.wav', '7': r'C:\Users\user\Desktop\Merry\音樂健康\Voice\蟋蟀V3_降噪正規化_右.wav' }
+        sound_dict = {'1': r'/home/orangepi/Desktop/Merry_healthy/Voice/continue.mp3', '2': r'/home/orangepi/Desktop/Merry_healthy/Voice/A2.mp3', 
+                        '3': r'/home/orangepi/Desktop/Merry_healthy/Voice/A3.mp3', '4': r'/home/orangepi/Desktop/Merry_healthy/Voice/A4.mp3',  
+                        '5': r'/home/orangepi/Desktop/Merry_healthy/Voice/A5.mp3',
+                        '6': r'/home/orangepi/Desktop/Merry_healthy/Voice/蟋蟀V3_降噪正規化_左.wav', '7': r'/home/orangepi/Desktop/Merry_healthy/Voice/蟋蟀V3_降噪正規化_右.wav' }
 
         pygame.mixer.music.load(sound_dict[choose_sound])
         pygame.mixer.music.play()
@@ -105,10 +105,10 @@ class MainApp(QtWidgets.QMainWindow):
         temp1 = choose_sound
         if temp1 == self.temp3:
             return
-        sound_dict = {'1': r'C:\Users\user\Desktop\Merry\音樂健康\Voice\continue.mp3', '2': r'C:\Users\user\Desktop\Merry\音樂健康\Voice\A2.mp3', 
-                        '3': r'C:\Users\user\Desktop\Merry\音樂健康\Voice\A3.mp3', '4': r'C:\Users\user\Desktop\Merry\音樂健康\Voice\A4.mp3',  
-                        '5': r'C:\Users\user\Desktop\Merry\音樂健康\Voice\A5.mp3',
-                        '6': r'C:\Users\user\Desktop\Merry\音樂健康\Voice\蟋蟀V3_降噪正規化_左.wav', '7': r'C:\Users\user\Desktop\Merry\音樂健康\Voice\蟋蟀V3_降噪正規化_右.wav' }
+        sound_dict = {'1': r'/home/orangepi/Desktop/Merry_healthy/Voice/continue.mp3', '2': r'/home/orangepi/Desktop/Merry_healthy/Voice/A2.mp3', 
+                        '3': r'/home/orangepi/Desktop/Merry_healthy/Voice/A3.mp3', '4': r'/home/orangepi/Desktop/Merry_healthy/Voice/A4.mp3',  
+                        '5': r'/home/orangepi/Desktop/Merry_healthy/Voice/A5.mp3',
+                        '6': r'/home/orangepi/Desktop/Merry_healthy/Voice/蟋蟀V3_降噪正規化_左.wav', '7': r'/home/orangepi/Desktop/Merry_healthy/Voice/蟋蟀V3_降噪正規化_右.wav' }
         pygame.mixer.Sound(sound_dict[choose_sound]).play()
         self.temp3 = choose_sound
 
@@ -158,10 +158,10 @@ class MainApp(QtWidgets.QMainWindow):
                 self.ui.label_fire.clear()
 
     def start_all(self):
-        self.video_cap = cv2.VideoCapture(r"C:\Users\user\Desktop\Merry\音樂健康\test (1).mp4")
-        music_path = r"C:\Users\user\Desktop\Merry\音樂健康\song_low.mp3"
+        self.video_cap = cv2.VideoCapture(r"/home/orangepi/Desktop/Merry_healthy/test (1).mp4")
+        music_path = r"/home/orangepi/Desktop/Merry_healthy/song_low.mp3"
         threading.Thread(target=self.play_music(music_path)).start()  #daemon=True 執行緒會在主執行緒結束時自動結束
-        self.camera_cap = cv2.VideoCapture(0, cv2.CAP_DSHOW)
+        self.camera_cap = cv2.VideoCapture(0) #ubuntu no use cv2.CAP_DSHOW
         self.camera_cap.set(cv2.CAP_PROP_FOURCC, cv2.VideoWriter_fourcc(*'MJPG'))
         self.camera_cap.set(cv2.CAP_PROP_FRAME_WIDTH, 320)
         self.camera_cap.set(cv2.CAP_PROP_FRAME_HEIGHT, 240)
