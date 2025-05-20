@@ -158,14 +158,15 @@ class MainApp(QtWidgets.QMainWindow):
                 self.ui.label_fire.clear()
 
     def start_all(self):
+        pipeline = "v4l2src device=/dev/video0 ! videoconvert ! appsink"
         self.video_cap = cv2.VideoCapture(r"/home/orangepi/Desktop/Merry_healthy/test (1).mp4")
         music_path = r"/home/orangepi/Desktop/Merry_healthy/song_low.mp3"
         threading.Thread(target=self.play_music(music_path)).start()  #daemon=True 執行緒會在主執行緒結束時自動結束
-        self.camera_cap = cv2.VideoCapture(0) #ubuntu no use cv2.CAP_DSHOW
-        self.camera_cap.set(cv2.CAP_PROP_FOURCC, cv2.VideoWriter_fourcc(*'MJPG'))
-        self.camera_cap.set(cv2.CAP_PROP_FRAME_WIDTH, 320)
-        self.camera_cap.set(cv2.CAP_PROP_FRAME_HEIGHT, 240)
-        self.camera_cap.set(cv2.CAP_PROP_FPS, 35)
+        self.camera_cap = cv2.VideoCapture(pipeline,cv2.CAP_GSTREAMER) #ubuntu no use cv2.CAP_DSHOW
+        # self.camera_cap.set(cv2.CAP_PROP_FOURCC, cv2.VideoWriter_fourcc(*'MJPG'))
+        # self.camera_cap.set(cv2.CAP_PROP_FRAME_WIDTH, 320)
+        # self.camera_cap.set(cv2.CAP_PROP_FRAME_HEIGHT, 240)
+        # self.camera_cap.set(cv2.CAP_PROP_FPS, 35)
         self.start_score_timer()
         self.video_timer.start(33)
         self.camera_timer.start(20)
