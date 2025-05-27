@@ -7,7 +7,7 @@ import librosa
 from PyQt5 import QtWidgets, QtGui, QtCore
 from PyQt5.QtGui import QMovie
 from PyQt5.QtCore import QTimer
-from ui_main import Ui_Game
+from ui_main import Ui_Game # 假設 ui_main.py 存在
 from ultralytics import YOLO
 import numpy as np
 import pygame
@@ -198,7 +198,7 @@ class MainApp(QtWidgets.QMainWindow):
     def start_all(self):
         # pipeline = "v4l2src device=/dev/video0 ! videoconvert ! appsink" # Ubuntu GStreamer pipeline
         # For general webcam, use index 0 or 1 etc.
-        self.video_cap = cv2.VideoCapture(r"/home/orangepi/Desktop/Merry_healthy/test (1).mp4")
+        # self.video_cap = cv2.VideoCapture(r"/home/orangepi/Desktop/Merry_healthy/test (1).mp4")
         music_path = r"/home/orangepi/Desktop/Merry_healthy/song_low.mp3"
         threading.Thread(target=self.play_music, args=(music_path,), daemon=True).start() # 確保音樂在獨立線程中播放
         
@@ -211,9 +211,9 @@ class MainApp(QtWidgets.QMainWindow):
             logger.warning("GStreamer camera capture failed, falling back to default OpenCV capture.")
             self.camera_cap = cv2.VideoCapture(0) # For webcam (usually index 0)
 
-        # self.camera_cap.set(cv2.CAP_PROP_FOURCC, cv2.VideoWriter_fourcc(*'MJPG'))
-        # self.camera_cap.set(cv2.CAP_PROP_FRAME_WIDTH, 320)
-        # self.camera_cap.set(cv2.CAP_PROP_FRAME_HEIGHT, 240)
+        self.camera_cap.set(cv2.CAP_PROP_FOURCC, cv2.VideoWriter_fourcc(*'MJPG'))
+        self.camera_cap.set(cv2.CAP_PROP_FRAME_WIDTH, 320)
+        self.camera_cap.set(cv2.CAP_PROP_FRAME_HEIGHT, 240)
         # self.camera_cap.set(cv2.CAP_PROP_FPS, 35)
         self.start_score_timer()
         self.video_timer.start(33)
