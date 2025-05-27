@@ -11,4 +11,4 @@ testncnn.py try this file FPS is 14~15
 
 ![image info](withoutAImodel.png "withoutAImodel")
 
-![image info](Screenshot from 2025-05-27 16-35-14.png "ncnn")
+![image info](ncnn_pic "ncnn")
