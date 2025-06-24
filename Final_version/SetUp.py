@@ -19,7 +19,7 @@ class initial_set:
         self.score = show_score(self, self.ui)
         self.music = Main_music(self, self.ui)
 
-        self.model = YOLO(r'C:\Users\user\Desktop\Merry\音樂健康\weight\yolo11m-pose_fp16.engine')
+        self.model = YOLO(r'/home/nxorin/Desktop/Merry_healthy/weight/yolo11n-pose.onnx')
         self.beat = 0.0
         self.video_cap = None
         self.camera_cap = None
@@ -28,15 +28,15 @@ class initial_set:
 
         self.lock1 = self.lock2 = self.lock3 = self.lock4 = self.lock5 = True
 
-        self.gif = QMovie(r"C:\Users\user\Desktop\Merry\音樂健康\gif素材\red_fire.gif")
-        self.bluegif = QMovie(r"C:\Users\user\Desktop\Merry\音樂健康\gif素材\blue_fire.gif")
+        self.gif = QMovie(r"/home/nxorin/Desktop/Merry_healthy/gif素材/red_fire.gif")
+        self.bluegif = QMovie(r"/home/nxorin/Desktop/Merry_healthy/gif素材/blue_fire.gif")
 
         self.total_score = 0
         self.pose_image = [
-            QtGui.QPixmap(r"C:\Users\user\Desktop\Merry\音樂健康\gif素材\雙手張開-4.png"),
-            QtGui.QPixmap(r"C:\Users\user\Desktop\Merry\音樂健康\gif素材\舉左手-6.png"),
-            QtGui.QPixmap(r"C:\Users\user\Desktop\Merry\音樂健康\gif素材\雙手半舉-5.png"),
-            QtGui.QPixmap(r"C:\Users\user\Desktop\Merry\音樂健康\gif素材\舉右手-6.png")
+            QtGui.QPixmap(r"/home/nxorin/Desktop/Merry_healthy/gif素材/雙手張開-4.png"),
+            QtGui.QPixmap(r"/home/nxorin/Desktop/Merry_healthy/gif素材/舉左手-6.png"),
+            QtGui.QPixmap(r"/home/nxorin/Desktop/Merry_healthy/gif素材/雙手半舉-5.png"),
+            QtGui.QPixmap(r"/home/nxorin/Desktop/Merry_healthy/gif素材/舉右手-6.png")
         ]
 
         self.stop_score_and_combo = False

@@ -19,12 +19,12 @@ class start_game:
         self.set.mode_cap.release()
         if self.set.camera_cap:
             self.set.camera_cap.release()
-        song = {'A': r"C:\Users\user\Desktop\Merry\音樂健康\0512\Song1\song1.wav", 'B': r"C:\Users\user\Desktop\Merry\音樂健康\0512\Song2\song2.wav"}
+        song = {'A': r"/home/nxorin/Desktop/Merry_healthy/0512/Song1/song1.wav", 'B': r"/home/nxorin/Desktop/Merry_healthy/0512/Song2/song2.wav"}
         self.set.restarted = True
 
-        self.set.camera_cap = cv2.VideoCapture(0, cv2.CAP_DSHOW)
+        self.set.camera_cap = cv2.VideoCapture(0)
         if self.ui.stackedWidget.currentIndex() ==3:
-            music_path = r"C:\Users\user\Desktop\Merry\音樂健康\music\Yellow.mp3"
+            music_path = r"/home/nxorin/Desktop/Merry_healthy/music/Yellow.mp3"
             self.set.choose_song = ""
         if self.ui.stackedWidget.currentIndex() == 1:
             music_path = song[self.set.choose_song]        ######音樂

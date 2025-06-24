@@ -1,5 +1,5 @@
 import time
-from PyQt5 import  QtGui
+from PyQt5 import QtGui
 from PyQt5.QtGui import  QImage, QPixmap
 import librosa
 import threading
@@ -51,7 +51,7 @@ class Main_music:
             gray_image = self.convert_pixmap_to_grayscale(self.set.pose_image[i])
             label.setPixmap(gray_image)
 
-        note =QtGui.QPixmap(r"C:\Users\user\Desktop\Merry\音樂健康\0512\rythm1.png")
+        note =QtGui.QPixmap(r"/home/nxorin/Desktop/Merry_healthy/0512/rythm1.png")
         self.ui.label_12.setPixmap(note)
 
         self.ui.label_beat.setText("")
@@ -127,20 +127,20 @@ class Main_music:
             return
         self.stop_score_and_combo = False
         if self.set.choose_song== 'A':
-            sound_dict = {'1': r'C:\Users\user\Desktop\Merry\音樂健康\0512\Song1\perc1.wav', '2': r'C:\Users\user\Desktop\Merry\音樂健康\0512\Song1\perc1.wav', 
-                        '3': r'C:\Users\user\Desktop\Merry\音樂健康\0512\Song1\perc2.wav', '4': r'C:\Users\user\Desktop\Merry\音樂健康\0512\Song1\perc2.wav',  
-                        '5': r'C:\Users\user\Desktop\Merry\音樂健康\0512\Song1\perc1.wav',
-                        '6': r'C:\Users\user\Desktop\Merry\音樂健康\Voice\蟋蟀V3_降噪正規化_左.wav', '7': r'C:\Users\user\Desktop\Merry\音樂健康\Voice\蟋蟀V3_降噪正規化_右.wav' }
+            sound_dict = {'1': r'/home/nxorin/Desktop/Merry_healthy/0512/Song1/perc1.wav', '2': r'/home/nxorin/Desktop/Merry_healthy/0512/Song1/perc1.wav', 
+                        '3': r'/home/nxorin/Desktop/Merry_healthy/0512/Song1/perc2.wav', '4': r'/home/nxorin/Desktop/Merry_healthy/0512/Song1/perc2.wav',  
+                        '5': r'/home/nxorin/Desktop/Merry_healthy/0512/Song1/perc1.wav',
+                        '6': r'C:/Users/user/Desktop/Merry/音樂健康/Voice/蟋蟀V3_降噪正規化_左.wav', '7': r'C:/Users/user/Desktop/Merry/音樂健康/Voice/蟋蟀V3_降噪正規化_右.wav' }
         elif self.set.choose_song== 'B':
-            sound_dict = {'1': r'C:\Users\user\Desktop\Merry\音樂健康\0512\Song2\perc1.wav', '2': r'C:\Users\user\Desktop\Merry\音樂健康\0512\Song2\perc1.wav', 
-                        '3': r'C:\Users\user\Desktop\Merry\音樂健康\0512\Song2\perc2.wav', '4': r'C:\Users\user\Desktop\Merry\音樂健康\0512\Song2\perc2.wav',  
-                        '5': r'C:\Users\user\Desktop\Merry\音樂健康\0512\Song2\perc1.wav',
-                        '6': r'C:\Users\user\Desktop\Merry\音樂健康\Voice\蟋蟀V3_降噪正規化_左.wav', '7': r'C:\Users\user\Desktop\Merry\音樂健康\Voice\蟋蟀V3_降噪正規化_右.wav' }
+            sound_dict = {'1': r'/home/nxorin/Desktop/Merry_healthy/0512/Song2/perc1.wav', '2': r'/home/nxorin/Desktop/Merry_healthy/0512/Song2/perc1.wav', 
+                        '3': r'/home/nxorin/Desktop/Merry_healthy/0512/Song2/perc2.wav', '4': r'/home/nxorin/Desktop/Merry_healthy/0512/Song2/perc2.wav',  
+                        '5': r'/home/nxorin/Desktop/Merry_healthy/0512/Song2/perc1.wav',
+                        '6': r'C:/Users/user/Desktop/Merry/音樂健康/Voice/蟋蟀V3_降噪正規化_左.wav', '7': r'C:/Users/user/Desktop/Merry/音樂健康/Voice/蟋蟀V3_降噪正規化_右.wav' }
         else:
-            sound_dict = {'1': r'C:\Users\user\Desktop\Merry\音樂健康\0512\Song2\perc1.wav', '2': r'C:\Users\user\Desktop\Merry\音樂健康\0512\Song2\perc1.wav', 
-                        '3': r'C:\Users\user\Desktop\Merry\音樂健康\0512\Song2\perc2.wav', '4': r'C:\Users\user\Desktop\Merry\音樂健康\0512\Song2\perc2.wav',  
-                        '5': r'C:\Users\user\Desktop\Merry\音樂健康\0512\Song2\perc1.wav',
-                        '6': r'C:\Users\user\Desktop\Merry\音樂健康\Voice\蟋蟀V3_降噪正規化_左.wav', '7': r'C:\Users\user\Desktop\Merry\音樂健康\Voice\蟋蟀V3_降噪正規化_右.wav' }
+            sound_dict = {'1': r'/home/nxorin/Desktop/Merry_healthy/0512/Song2/perc1.wav', '2': r'/home/nxorin/Desktop/Merry_healthy/0512/Song2/perc1.wav', 
+                        '3': r'/home/nxorin/Desktop/Merry_healthy/0512/Song2/perc2.wav', '4': r'/home/nxorin/Desktop/Merry_healthy/0512/Song2/perc2.wav',  
+                        '5': r'/home/nxorin/Desktop/Merry_healthy/0512/Song2/perc1.wav',
+                        '6': r'C:/Users/user/Desktop/Merry/音樂健康/Voice/蟋蟀V3_降噪正規化_左.wav', '7': r'C:/Users/user/Desktop/Merry/音樂健康/Voice/蟋蟀V3_降噪正規化_右.wav' }
 
 
         sound =pygame.mixer.Sound(sound_dict[choose_sound])

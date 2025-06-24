@@ -1,16 +1,23 @@
 # cd C:\Users\user\Desktop\Merry\音樂健康
 # pyuic5 -x main.ui -o ui_main.py
+import os
 import sys
 import cv2
 import time
 from PyQt5 import QtWidgets, QtGui, QtCore
+from PyQt5.QtCore import QLibraryInfo
 from ui_main import Ui_Game
 import numpy as np
 import pygame
 import threading
 import time
 from SetUp import initial_set
-
+import onnxruntime as ort
+os.environ["QT_QPA_PLATFORM_PLUGIN_PATH"]=QLibraryInfo.location(
+    QLibraryInfo.PluginsPath
+)
+session_options = ort.SessionOptions()
+session_options.log_severity_level =1
 class MainApp(QtWidgets.QMainWindow):
     def __init__(self): 
         super().__init__()
@@ -57,14 +64,14 @@ class MainApp(QtWidgets.QMainWindow):
         return background
 
     def checking_mode(self):
-        self.setting.mode_cap = cv2.VideoCapture(0, cv2.CAP_DSHOW)        
+        self.setting.mode_cap = cv2.VideoCapture(0)        
         self.setting.mode_cap.set(cv2.CAP_PROP_FPS, 60)
         right_hand_x = 0
         right_hand_y = 0
         left_hand_x = 0
         left_hand_y = 0
-        logoA= cv2.imread(r"C:\Users\user\Desktop\Merry\音樂健康\gif素材\A.png" , cv2.IMREAD_UNCHANGED)
-        logoB= cv2.imread(r"C:\Users\user\Desktop\Merry\音樂健康\gif素材\B.png", cv2.IMREAD_UNCHANGED)  
+        logoA= cv2.imread(r"/home/nxorin/Desktop/Merry_healthy/gif素材/A.png" , cv2.IMREAD_UNCHANGED)
+        logoB= cv2.imread(r"/home/nxorin/Desktop/Merry_healthy/gif素材/B.png", cv2.IMREAD_UNCHANGED)  
 
         while self.setting.checked_running:
             success, frame = self.setting.mode_cap.read()
