@@ -1,21 +1,21 @@
 from PyQt5.QtCore import QTimer
+import time
 
 class show_score:
-    def __init__(self, parent,ui):
+    def __init__(self, parent, ui):
         self.ui = ui
         self.set = parent
-    def show_score(self):
+    def show_score(self):  #顯示分數的function
         self.ui.label_10.setText(f"Score: {float(self.set.total_score):.2f}")
         if self.ui.stackedWidget.currentIndex() == 3:
             self.ui.label_34.setText(f"Score: {float(self.set.total_score):.2f}")
 
-    def score_cal(self, dif_time):
-        if self.set.stop_score_and_combo:
-            return
-        best = self.set.beat_interval * 0.2
+    def score_cal(self, dif_time):   
+        # if self.set.stop_score_and_combo:
+        #     return
+        best = self.set.beat_interval * 0.2  
         nice = self.set.beat_interval * 0.4
         not_bad = self.set.beat_interval * 0.8
-    
         if self.set.combo < 5:  #計算combo倍率
             self.set.combo_mult = 1.0
         elif self.set.combo < 9:
@@ -27,12 +27,12 @@ class show_score:
 
         score_add = 0
 
-        if abs(dif_time) < best:
+        if abs(dif_time) < best:  ##根據動作與拍子的差距來計算分數
             score_add = 3 * self.set.combo_mult
-            self.combo += 1
+            self.set.combo += 1
         elif abs(dif_time) <= nice:
             score_add = 2 * self.set.combo_mult
-            self.combo += 1
+            self.set.combo += 1
         elif abs(dif_time) <= not_bad:
             score_add = 1
             self.set.combo = 0
@@ -42,8 +42,16 @@ class show_score:
        
         self.set.total_score += score_add  
 
-        if score_add > 0:
+        if score_add > 0:  ##顯示增加的分數
             self.set.last_score_add = f"+{score_add:.2f}"
             self.set.show_score_add = True
 
-        QTimer.singleShot(0, self.set.update_fire_effect)
+        QTimer.singleShot(0, self.set.main_app.update_fire_effect)  ##持續更新火焰特效
+
+    def display_score_temporarily(self):  ##讓做出動作對應到的加分過0.5秒後即消失(視覺化)
+        if self.set.show_score_add: 
+            self.ui.label_11.setText(self.set.last_score_add)  
+            self.ui.label_35.setText(self.set.last_score_add)           
+            if time.time() - self.set.last_score_add_time > 0.5:  ##0.5秒後加分顯示消失(清空字串)
+                self.set.last_score_add = ""
+                self.set.show_score_add = False 

@@ -22,28 +22,28 @@ class yolo_pose:
     
     def unlock(self, number):   ##解決動作維持導致多次誤觸問題的function
         if number == '1':
-            self.setting.lock1 = True
+            self.set.lock1 = True
         elif number == '2':
-            self.setting.lock2 = True
+            self.set.lock2 = True
         elif number == '3':
-            self.setting.lock3 = True
+            self.set.lock3 = True
         elif number == '4':
-            self.setting.lock4 = True
+            self.set.lock4 = True
         elif number == '5':
-            self.setting.lock5 = True
+            self.set.lock5 = True
 
-    def update_camera_frame(self):
+    def update_camera_frame(self):  ##更新畫面跟即時辨識
         if not self.set.is_running or self.set.camera_cap is None:
             return
-        ret, frame = self.set.camera_cap.read()
+        ret, frame = self.set.camera_cap.read()  ##開始讀取畫面
         frame = cv2.flip(frame, 1)
         if ret:
-            results = self.set.model(frame, conf=0.5, classes= 0,verbose=False)
+            results = self.set.model(frame, conf=0.5, classes= 0,verbose=False)  ##辨識結果存於results中
             kpt_temp = results[0].keypoints.xy 
             kpt_data = kpt_temp.cpu().numpy()  #關鍵點data
 
             for i in range(len(results[0].boxes)):
-                body_keypoints = kpt_data[i][5:17]
+                body_keypoints = kpt_data[i][5:17]  ##可設定需要完全偵測到的關鍵點
                 if np.any(body_keypoints == 0):                # 檢查所有關鍵點是否都偵測到condition
                     continue
                 else:
@@ -79,23 +79,23 @@ class yolo_pose:
                         [kpt_data[i][6][0], kpt_data[i][6][1]],
                         [kpt_data[i][5][0], kpt_data[i][5][1]]
                     )
-                    self.set.label = True
+                    self.set.label = True  ###可以設定開始播放音效的動作
                     
-                    if self.set.label:
+                    if self.set.label:  
                         if(kpt_data[i][10][1] < (kpt_data[i][0][1]-((kpt_data[i][6][1]-kpt_data[i][4][1])/1.1))) & \
                             (kpt_data[i][9][1] < (kpt_data[i][0][1]-((kpt_data[i][5][1]-kpt_data[i][3][1])/1.1))) & self.set.lock1 :  # 動作一(雙手舉高舉直)
-                            self.set.pose_label = '1'
-                            self.set.lock1 = False
-                            self.set.last_score_add_time = time.time()
-                            active_time = time.time()-self.set.music_start_time
-                            self.set.pose_timing = active_time
-                            nearest_beat = min(self.beat_times, key=lambda b: abs(b - active_time))  
-                            dif_time = active_time - nearest_beat  
-                            t = threading.Thread(target=self.set.music.play_sound, args=('1',))
+                            self.set.pose_label = '1'  ##設定動作標籤(目前沒用到，但是可以用來做檢查，或者之後要做出對應的動作才會計算分數)
+                            self.set.lock1 = False  ##需要解鎖(0.6秒)
+                            self.set.last_score_add_time = time.time() ##記錄最後一次加分的時間
+                            active_time = time.time()-self.set.music_start_time  ##計算動作時間
+                            self.set.pose_timing = active_time ##記錄動作時間
+                            nearest_beat = min(self.set.music.beat_times, key=lambda b: abs(b - active_time))    # 找最接近的拍子時間點
+                            dif_time = active_time - nearest_beat   ##計算動作與拍子的時間差
+                            t = threading.Thread(target=self.set.music.play_sound, args=('1',))  ##播放音效
                             t.start()
-                            tt = threading.Thread(target=self.set.score.score_cal, args=(dif_time,))
+                            tt = threading.Thread(target=self.set.score.score_cal, args=(dif_time,))  ##計算分數(將時間差轉換成得到的對應分數)
                             tt.start()
-                            cool = threading.Timer(self.set.cool_time, self.unlock, args=('1',))
+                            cool = threading.Timer(self.set.cool_time, self.unlock, args=('1',))   ##動作時間冷卻
                             cool.start()                        
 
                         if(kpt_data[i][10][1] < kpt_data[i][6][1]) & (kpt_data[i][9][1] < kpt_data[i][5][1]) & \
@@ -104,9 +104,9 @@ class yolo_pose:
                             self.set.pose_label = '2'
                             self.set.lock2 = False
                             self.last_score_add_time = time.time()
-                            active_time = time.time()-self.music_start_time
+                            active_time = time.time()-self.set.music_start_time
                             self.set.pose_timing = active_time
-                            nearest_beat = min(self.set.beat_times, key=lambda b: abs(b - active_time))  
+                            nearest_beat = min(self.set.music.beat_times, key=lambda b: abs(b - active_time))  
                             dif_time = active_time - nearest_beat  
 
                             a = threading.Thread(target=self.set.music.play_sound, args=('2',))
@@ -124,7 +124,7 @@ class yolo_pose:
                             self.set.last_score_add_time = time.time()
                             active_time = time.time()-self.set.music_start_time
                             self.set.pose_timing = active_time
-                            nearest_beat = min(self.set.beat_times, key=lambda b: abs(b - active_time))  
+                            nearest_beat = min(self.set.music.beat_times, key=lambda b: abs(b - active_time))  
                             dif_time = active_time - nearest_beat  
                             b = threading.Thread(target=self.set.music.play_sound, args=('3',))
                             b.start()
@@ -139,9 +139,11 @@ class yolo_pose:
                             self.set.lock4 = False
                             self.set.last_score_add_time = time.time()
                             active_time = time.time()-self.set.music_start_time
+                            
                             self.set.pose_timing = active_time
-                            nearest_beat = min(self.set.beat_times, key=lambda b: abs(b - active_time))  
+                            nearest_beat = min(self.set.music.beat_times, key=lambda b: abs(b - active_time))  
                             dif_time = active_time - nearest_beat  
+                            print(dif_time)
                             c = threading.Thread(target=self.set.music.play_sound, args=('4',))
                             c.start()
                             cc = threading.Thread(target=self.set.score.score_cal, args=(dif_time,))
@@ -158,7 +160,7 @@ class yolo_pose:
                             self.set.last_score_add_time = time.time()
                             active_time = time.time()-self.set.music_start_time
                             self.set.pose_timing = active_time
-                            nearest_beat = min(self.set.beat_times, key=lambda b: abs(b - active_time))  
+                            nearest_beat = min(self.set.music.beat_times, key=lambda b: abs(b - active_time))  
                             dif_time = active_time - nearest_beat  
                             d = threading.Thread(target=self.set.music.play_sound, args=('5',))
                             d.start()
