@@ -201,7 +201,7 @@ class Interface:
                         [kpt_data[i][5][0], kpt_data[i][5][1]]
                     )
                     if self.change_flag:
-                        self.label = not self.label #########
+                        self.label = not self.label #########如果收到udp改變訊號，則更改邏輯，不進入下面的姿態判別式
 
                     if self.label & self.flag: #flag:音樂開始後的動作判斷
                         if (kpt_data[i][9][1] > kpt_data[i][5][1]) & (kpt_data[i][10][1] > kpt_data[i][6][1]) :
@@ -210,6 +210,9 @@ class Interface:
                             self.check4 = True
                         if (kpt_data[i][9][1] > (kpt_data[i][5][1]+kpt_data[i][11][1])/2) & (kpt_data[i][10][1] > (kpt_data[i][6][1]+kpt_data[i][12][1])/2):
                             self.check5 = True
+                        
+                        if( right_elbow_angle>90) & (left_elbow_angle>90):  
+                            self.check2 = True
 
                         if(kpt_data[i][10][1] < (kpt_data[i][0][1]-((kpt_data[i][6][1]-kpt_data[i][4][1])/1.1))) & \
                             (kpt_data[i][9][1] < (kpt_data[i][0][1]-((kpt_data[i][5][1]-kpt_data[i][3][1])/1.1))) & self.lock1 & self.check1:  # 動作一(雙手舉高舉直)
