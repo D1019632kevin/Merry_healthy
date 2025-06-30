@@ -31,9 +31,6 @@ class MainApp(QtWidgets.QMainWindow):
             self.ui.stackedWidget.setCurrentIndex(4)  ##翻到下一頁(顯示分數)
             self.ui.label_25.setText(f"Your Score is: {self.setting.total_score:.2f}")
 
-    # def check_mode_start(self):
-    #     self.setting.checked = True
-
     def overlay_image_alpha(self,background, overlay, x, y):  ###將a、b模式的圖樣去背後顯示在畫面中
         h, w = overlay.shape[:2]
 

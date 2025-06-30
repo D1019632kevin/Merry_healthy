@@ -5,7 +5,6 @@ import pygame
 import tkinter as tk
 from PIL import Image, ImageTk
 import threading
-from threading import Timer
 from pythonosc import udp_client
 import time
 import matplotlib.pyplot as plt

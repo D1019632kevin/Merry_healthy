@@ -35,8 +35,6 @@ class start_game:
 
         if self.ui.stackedWidget.currentIndex() == 1:
             self.set.camera_timer.start(20)  ##開始鏡頭(第一關的)
-        # if self.ui.stackedWidget.currentIndex() == 3:
-        #     self.set.camera_timer.stop()  ##關閉鏡頭(第一關的關閉，降低消耗)
         self.ui.label_12.setText("Loading...")
 
         if self.set.camera_cap:
