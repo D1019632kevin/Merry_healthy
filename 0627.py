@@ -10,10 +10,11 @@ import librosa
 # from ffpyplayer.player import MediaPlayer
 
 # IP = "192.168.0.90" 
-IP = "127.0.0.1"
+IP = "10.75.201.135"
 RECEIVE_IP = "0.0.0.0"
-PORT = 7676
-CLIENT = udp_client.SimpleUDPClient(IP, PORT)
+PORT1 = 7676
+PORT2 = 7675
+CLIENT = udp_client.SimpleUDPClient(IP, PORT2)
 DISP = dispatcher.Dispatcher()
 
 pygame.mixer.init()
@@ -34,20 +35,28 @@ class Interface:
         self.combo = 0
         self.total_score = 0
         self.label = False
-
-        music_path = r"C:\Users\user\Desktop\Merry\音樂健康\music\apt.mp3"
-        threading.Thread(target=self.play_music, args=(music_path,), daemon=True).start()
-        threading.Thread(target=self.osc_receive, args=(), daemon=True).start()
-        self.play_video()
+        # self.play_video()
+        self.music_path = r"/home/nxorin/Downloads/novision/Merry_healthy/music/apt.mp3"
+        self.osc_receive()
+        # threading.Thread(target=self.play_music, args=(self.music_path,), daemon=True).start()
+        # threading.Thread(target=self.osc_receive, args=(), daemon=True).start()
+        
         # a=threading.Thread(target=self.osc_receive, args=(), daemon=True).start()
 
     def change(self,address, message):   ##接收來自pythonosc的message
         print("message")
-        self.change_flag = not self.change_flag
-
+        if not self.change_flag:
+            self.change_flag = True
+            self.label =True
+            print("Starting")
+            
+            threading.Thread(target=self.play_music, args=(self.music_path,), daemon=True).start()
+            time.sleep(0.5)
+            threading.Thread(target=self.play_video, args=(), daemon=True).start()
+        
     def osc_receive(self): 
         DISP.map("/start", self.change)
-        server = ThreadingOSCUDPServer((RECEIVE_IP, PORT), DISP)
+        server = ThreadingOSCUDPServer((RECEIVE_IP, PORT1), DISP)
         server.serve_forever()
 
     def play_music(self, music_path):     ##播放背景音樂的function
@@ -58,6 +67,8 @@ class Interface:
         pygame.mixer.music.load(music_path)
         pygame.mixer.music.set_volume(0.4)
         pygame.mixer.music.play()
+        self.music_start_time = time.time()
+        self.flag = True
         threading.Thread(target=self.play_beat, args=(self.beat_times,), daemon=True).start()  #####計算和顯示拍子(將剛剛計算出的beat也傳入play_beat)
     def unlock(self, number):   ##解決動作維持導致多次誤觸問題的function
         if number == '1':
@@ -101,7 +112,7 @@ class Interface:
        
         self.total_score += score_add  
         print(f"總分:{self.total_score:.3f}, 此次動作加{score_add}, combo數:{self.combo}。")
-
+        CLIENT.send_message("/score",self.total_score)
     def calculate_angle(self, a, b, c):
         a = np.array(a)  # 頭
         b = np.array(b)  # 中間點
@@ -144,7 +155,8 @@ class Interface:
 
 
     def play_video(self):
-        cap = cv2.VideoCapture(self.video_path, cv2.CAP_DSHOW) #,cv2.CAP_DSHOW
+        print("play video")
+        cap = cv2.VideoCapture(0) #,cv2.CAP_DSHOW
         cap.set(cv2.CAP_PROP_FRAME_WIDTH, 640)
         cap.set(cv2.CAP_PROP_FRAME_HEIGHT, 480) 
         cap.set(cv2.CAP_PROP_FOURCC, cv2.VideoWriter_fourcc(*'MJPG'))
@@ -153,12 +165,10 @@ class Interface:
         framecounter = 0
         while cap.isOpened():
             success, frame = cap.read()
-            if not success:
-                continue
- 
+
             frame = cv2.resize(frame, (640, 480))
             results = self.model(frame, conf=0.5, classes=0, verbose= False)
-
+            # cv2.imshow("video",frame)
             kpt_temp = results[0].keypoints.xy 
             kpt_data = kpt_temp.cpu().numpy()  # 關鍵點data
                     
@@ -297,7 +307,8 @@ class Interface:
 
 
 if __name__ == "__main__":    
-    model = YOLO(r"C:\Users\user\Desktop\Merry\音樂健康\weight\yolo11m-pose_fp16.engine")
+    model = YOLO(r"/home/nxorin/Downloads/novision/Merry_healthy/yolo11n-pose_ncnn_model")
     video_path = 0 #r"C:\Users\user\Desktop\Merry\音樂健康\WIN_20250424_11_01_38_Pro.mp4"
+    
     label = False
     app = Interface(model, video_path, label)
